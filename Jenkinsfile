@@ -5,7 +5,7 @@ pipeline {
          }
        }
 	stages {
-        stage ('Initialize') {
+        stage('Initialize') {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
@@ -13,7 +13,7 @@ pipeline {
                 '''
             }
         }  
-      stage ('Checkout code and build'){
+      stage('Checkout code and build') {
                 git url: "${GITURL}",credentialsId: "${GITCREDID}"
         }
         stage ('SonarQube analysis') {
@@ -24,8 +24,7 @@ pipeline {
                   
                 }
         }
-        
-        stage ('Quality Gate Check'){
+        stage('Quality Gate Check') {
           timeout(time: 5, unit: 'MINUTES') {
               def qg = waitForQualityGate()
               if (qg.status != 'OK') {
@@ -33,7 +32,7 @@ pipeline {
                 }
             }
         }
-	stage ('Build') {
+	stage('Build') {
             steps {
                sh '''
 	           mvn -v
@@ -42,10 +41,10 @@ pipeline {
 		   '''
             }
         }
-      
-	stage ('docker build')
-        {
-          sh """docker login -u ${USERNAME} -p${PASSWORD} ${HOST}
+ 
+	stage('docker build') {
+          sh """
+	  docker login -u ${USERNAME} -p${PASSWORD} ${HOST}
 	  docker build -t ${HOST}/helloworld-maven:1.0 .
           docker push ${HOST}/helloworld-maven:1.0 .
 	  """
