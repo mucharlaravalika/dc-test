@@ -16,7 +16,7 @@ pipeline {
       stage('Checkout code and build') {
                 git url: "${GITURL}",credentialsId: "${GITCREDID}"
         }
-        stage ('SonarQube analysis') {
+        stage('SonarQube analysis') {
             // step ([$class: 'CopyArtifact', projectName: 'checkout code and build', filter: '**/*']);
                 withSonarQubeEnv ("SonarQube(Sonar)") {
                    // sh """${SONARSCANNER}/bin/sonar-scanner"""
@@ -43,12 +43,14 @@ pipeline {
         }
  
 	stage('docker build') {
+	  steps {		
           sh """
 	  docker login -u ${USERNAME} -p${PASSWORD} ${HOST}
 	  docker build -t ${HOST}/helloworld-maven:1.0 .
           docker push ${HOST}/helloworld-maven:1.0 .
 	  """
         }
+	}
        // stage("openshift deployment")
        // {
          //   sh"""
