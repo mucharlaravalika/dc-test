@@ -13,7 +13,7 @@ pipeline {
                 '''
             }
         }  
-      stage('Checkout code and build'){
+      stage ('Checkout code and build'){
                 git url: "${GITURL}",credentialsId: "${GITCREDID}"
         }
         stage ('SonarQube analysis') {
@@ -25,7 +25,7 @@ pipeline {
                 }
         }
         
-        stage("Quality Gate Check"){
+        stage ('Quality Gate Check'){
           timeout(time: 5, unit: 'MINUTES') {
               def qg = waitForQualityGate()
               if (qg.status != 'OK') {
@@ -43,7 +43,7 @@ pipeline {
             }
         }
       
-	stage("docker build")
+	stage ('docker build')
         {
           sh """docker login -u ${USERNAME} -p${PASSWORD} ${HOST}
 	  docker build -t ${HOST}/helloworld-maven:1.0 .
