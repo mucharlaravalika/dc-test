@@ -1,9 +1,9 @@
 pipeline {
-    agent any
-    tools {
-        maven "Maven 3.6."
-        jdk "jdk8"
-    }
+    agent {
+      node {
+          label 'DockerIO-2'
+         }
+       }
 	stages {
         stage ('Initialize') {
             steps {
