@@ -38,7 +38,7 @@ pipeline {
                sh '''
 	           mvn -v
 		   mvn install
-		   mvn compile
+		   mvn package
 		   '''
             }
         }
